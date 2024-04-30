@@ -43,20 +43,21 @@ class DayChart extends StatelessWidget {
               enablePanning: true,
               zoomMode: ZoomMode.xy,
             ),
-            //     onDataLabelRender: (DataLabelRenderArgs args) {
-            //       if (args.pointIndex > 0) {
-            //         final point = args.dataPoints[args.pointIndex];
-            //         final xValue = point.x;
-            //         final yValue = point.y;
-            //         final peakValue = getdata()[args.pointIndex].peakValue;
-            //         if (peakValue != null && yValue == peakValue) {
-            //           args.text = 'X: $xValue, Y: $yValue';
-            //   args.textStyle=const TextStyle(color:Colors.grey);
-            // args.border
-
-            //         } else {}
-            //       }
-            //     },
+            onDataLabelRender: (DataLabelRenderArgs args) {
+              if (args.pointIndex > 0) {
+                final point = args.dataPoints[args.pointIndex];
+                final xValue = point.x;
+                final yValue = point.y;
+                final peakValue = getdata()[args.pointIndex].peakValue;
+                if (peakValue != null && peakValue != 0) {
+                  args.text = 'X: $xValue, Y: $yValue';
+                  args.textStyle = const TextStyle(
+                    color: Colors.white,
+                    backgroundColor: Colors.black,
+                  );
+                }
+              }
+            },
             series: <CartesianSeries>[
               LineSeries<PetrolData, DateTime>(
                 dataSource: getdata(),
@@ -79,11 +80,11 @@ class DayChart extends StatelessWidget {
       PetrolData(
           x: baseDate.add(const Duration(milliseconds: 300000)),
           y: 100,
-          peakValue: null),
+          peakValue: 0),
       PetrolData(
           x: baseDate.add(const Duration(milliseconds: 340000)),
           y: 80,
-          peakValue: null),
+          peakValue: 0),
       PetrolData(
           x: baseDate.add(const Duration(milliseconds: 86400000)),
           y: 90,
@@ -95,7 +96,7 @@ class DayChart extends StatelessWidget {
       PetrolData(
           x: baseDate.add(const Duration(days: 2, minutes: 0, seconds: 30)),
           y: 20,
-          peakValue: null),
+          peakValue: 0),
     ];
   }
 }
@@ -103,11 +104,11 @@ class DayChart extends StatelessWidget {
 class PetrolData {
   final DateTime x;
   final double y;
-  final double? peakValue;
+  double? peakValue = null;
   PetrolData({
     required this.x,
     required this.y,
-    this.peakValue,
+    required this.peakValue,
   });
 }
 
