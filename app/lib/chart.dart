@@ -7,6 +7,7 @@ class DayChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool showDataLabel = false;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple,
@@ -44,7 +45,7 @@ class DayChart extends StatelessWidget {
               zoomMode: ZoomMode.xy,
             ),
             onDataLabelRender: (DataLabelRenderArgs args) {
-              if (args.pointIndex > 0) {
+              if (args.pointIndex >= 0) {
                 final point = args.dataPoints[args.pointIndex];
                 final xValue = point.x;
                 final yValue = point.y;
@@ -55,6 +56,8 @@ class DayChart extends StatelessWidget {
                     color: Colors.white,
                     backgroundColor: Colors.black,
                   );
+                } else {
+                  args.text = null;
                 }
               }
             },
@@ -63,7 +66,7 @@ class DayChart extends StatelessWidget {
                 dataSource: getdata(),
                 xValueMapper: (PetrolData data, _) => data.x,
                 yValueMapper: (PetrolData data, _) => data.y,
-                dataLabelSettings: const DataLabelSettings(isVisible: true),
+                dataLabelSettings: DataLabelSettings(isVisible: true),
                 color: const Color.fromARGB(255, 4, 20, 63),
                 pointColorMapper: (PetrolData data, _) =>
                     data.y < 20 ? Colors.red : Color.fromARGB(255, 4, 20, 63),
@@ -133,3 +136,4 @@ class RelativeDateTimeLabelFormatter extends DateFormat {
     return '$days: $formattedHours: $formattedMinutes: $formattedSeconds ';
   }
 }
+
